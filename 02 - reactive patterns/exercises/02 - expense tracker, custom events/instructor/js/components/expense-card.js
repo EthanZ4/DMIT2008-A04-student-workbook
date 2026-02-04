@@ -87,14 +87,14 @@ class ExpenseCard extends HTMLElement {
 
     // 1. delete button clicked event
     this.shadowRoot.querySelector('.delete-btn').addEventListener(
-      "clicked",
+      "click",
       () => { // callback function is an anonymous arrow function
         const deleteEvent = new CustomEvent(
           "expense-delete",  // first term:  event's name
           {                  // second term: event info
             detail: { id: this.id },   // detail: the payload/data/message that is passed with the event
             bubbles: true,             // can propagate upwards through DOM, rather than direct sender/receiver info
-            compose: true,             // event can cross shadow DOM boundary
+            composed: true,             // event can cross shadow DOM boundary
           }
         );
 
@@ -118,12 +118,12 @@ class ExpenseCard extends HTMLElement {
               detail: {
                 id: this.id,
                 title: this.getAttribute("title"),
-                category: this.getAttribute("category"),
+                category: this.getAttribute("category").toLowerCase(), // see: index.html, select option values are lowercase
                 date: this.getAttribute("date"),
                 amount: this.getAttribute("amount"),
               },  
               bubbles: true,
-              compose: true,
+              composed: true,
             }
           )
         );
