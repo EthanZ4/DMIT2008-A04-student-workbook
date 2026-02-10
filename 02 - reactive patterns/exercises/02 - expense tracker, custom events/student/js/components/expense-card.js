@@ -123,7 +123,7 @@ class ExpenseCard extends HTMLElement {
                 amount: this.getAttribute("amount"),
               },  
               bubbles: true,
-              composed: true,
+              compose: true,
             }
           )
         );
