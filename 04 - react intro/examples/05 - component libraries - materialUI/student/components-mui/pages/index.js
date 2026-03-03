@@ -15,10 +15,10 @@ export default function Home() {
       </Head>
       <main>
           <Container maxWidth="sm">
-          <Box sx={{ my: 4 }}>
-            {/* we'll add some content here.*/}
-          </Box>
-</Container>
+            <Box sx={{ my: 4 }}>
+              {/* we'll add some content here.*/}
+            </Box>
+          </Container>
       </main>
     </>
   );
