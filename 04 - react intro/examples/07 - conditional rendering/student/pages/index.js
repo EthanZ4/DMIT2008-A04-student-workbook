@@ -1,3 +1,5 @@
+import {useState} from 'react';
+
 import { MOVIE_LIST } from '../utils/movies'
 
 import Head from 'next/head'
@@ -16,6 +18,40 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
 export default function Home() {
+
+const [search, setSearch] = useState("")
+const [year, setYear] = useState("")
+
+const [movies, setMovies] = useState(MOVIE_LIST)
+
+const handleSubmit = (event) => {
+  event.preventDefault();
+  filterMovies();
+  console.log(search);
+  console.log(year);
+}
+
+const filterMovies = () => {
+
+  // copy movie list so we don't mutate original data
+  const filteredMovies = [...MOVIE_LIST]
+  if (search.trim() !== "") {
+    // filter array for matching movie name substrings
+    filteredMovies = filteredMovies.filter((movie) => {
+      return movie.name.toLowerCase().includes(search.trim().toLowerCase())
+    })
+  }
+
+  if (year.trim() !== "") {
+    filteredMovies = filteredMovies.filter((movie) => {
+      return movie.year === parseInt(year.trim())
+    })
+  }
+
+  setMovies(filteredMovies)
+
+}
+
   return (
     <div>
       <Head>
@@ -33,14 +69,20 @@ export default function Home() {
           <Typography variant="h2" component="h2" style={{textAlign: "center"}}>
             Movies
           </Typography>
-          <form style={{width: '100%'}}>
+          <form style={{width: '100%'}}
+           onSubmit={handleSubmit}
+          >
             <Grid container spacing={2}>
+              {/* this is the old MUI Grid format, because were pinning package versions in this starter.
+                  In new format you would use size={6} */}
               <Grid item xs={6}>
                 <TextField
                   id="search-field"
                   label="search..."
                   variant="standard"
                   sx={{width: '100%'}}
+                  onChange={(e) => {setSearch(e.target.value)}}
+                  value={search}
                   
                 />
               </Grid>
@@ -50,6 +92,8 @@ export default function Home() {
                   label="year"
                   variant="standard"
                   sx={{width: '100%'}}
+                  onChange={(e) => {setYear(e.target.value)}}
+                  value={year}
                  
                 />
               </Grid>
@@ -65,7 +109,16 @@ export default function Home() {
             </Grid>
           </form>
           <List sx={{width: `100%`}}>
-          { MOVIE_LIST.map((movieData, index)=> {
+            {movies.length === 0 &&
+              <ListItem>
+                <ListItemText>
+                <Typography variant="p" component="div">
+                  No results please search again.
+                </Typography>
+                </ListItemText>
+              </ListItem>
+            }
+          { movies.map((movieData, index)=> {
               return <ListItem key={index}>
                 <ListItemText>
                   <Typography variant="p" component="div">
